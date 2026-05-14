@@ -4,213 +4,151 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VibeKit | Sequential requirements for vibe-coded apps</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=4" />
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header compact-header">
     <div>
       <p class="eyebrow">VibeKit</p>
       <h1>Sequential requirements for vibe-coded apps.</h1>
     </div>
     <p class="header-copy">
-      Turn a rough app idea into a focused, AI-ready product brief without dumping every requirement at once.
+      AI-generated drafts, clear user steps, and human review before the next build action.
     </p>
   </header>
 
   <nav class="template-nav" aria-label="Template navigation">
-    <button class="template-tab active" type="button" data-template-tab="product-intake">
-      <span>01</span>
-      Product Intake
-    </button>
-    <button class="template-tab" type="button" data-template-tab="core-loop">
-      <span>02</span>
-      Core Loop
-    </button>
-    <button class="template-tab" type="button" data-template-tab="mvp-boundary">
-      <span>03</span>
-      MVP Boundary
-    </button>
+    <button class="template-tab active" type="button" data-template-tab="product-intake"><span>01</span> Product Intake</button>
+    <button class="template-tab" type="button" data-template-tab="core-loop"><span>02</span> Core Loop</button>
+    <button class="template-tab" type="button" data-template-tab="mvp-boundary"><span>03</span> MVP Boundary</button>
   </nav>
 
-  <main class="app-shell">
+  <main class="app-shell compact-shell">
     <section class="panel intake-panel" aria-labelledby="intake-title">
-      <div class="template-panel active" data-template-panel="product-intake">
-        <div class="section-heading">
-          <p class="step-label">Pass 1</p>
-          <h2 id="intake-title">Product Intake Template</h2>
-          <p>
-            Define only what is needed for the first build conversation. Later templates will handle scope, data, auth, design, and QA.
-          </p>
+      <div class="workflow-status" aria-label="Current workflow status">
+        <div>
+          <span class="status-label">Current step</span>
+          <strong id="active-template-label">Product Intake</strong>
         </div>
-
-        <form id="product-intake-form" class="intake-form" data-template-form="product-intake">
-          <div class="field">
-            <label for="app-name">App name <span>required</span></label>
-            <input id="app-name" name="appName" type="text" placeholder="VibeKit" required />
-          </div>
-
-          <div class="field">
-            <label for="description">One-sentence description <span>required</span></label>
-            <textarea id="description" name="description" rows="3" placeholder="A guided requirements workspace for AI-assisted app builders." required></textarea>
-          </div>
-
-          <div class="field">
-            <label for="problem">What problem does this solve?</label>
-            <textarea id="problem" name="problem" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="audience">Who is it for?</label>
-            <textarea id="audience" name="audience" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="first-action">What should users be able to do first?</label>
-            <textarea id="first-action" name="firstAction" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="not-become">What should this app not become?</label>
-            <textarea id="not-become" name="notBecome" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="vibe">What is the emotional or vibe direction?</label>
-            <textarea id="vibe" name="vibe" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="references">Comparable apps or references</label>
-            <textarea id="references" name="references" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="different">What makes this different?</label>
-            <textarea id="different" name="different" rows="3"></textarea>
-          </div>
-
-          <fieldset class="tools-fieldset">
-            <legend>Preferred helper tools</legend>
-            <div class="tool-grid">
-              <label><input type="checkbox" name="tools" value="VS Code" /> VS Code</label>
-              <label><input type="checkbox" name="tools" value="GitHub" /> GitHub</label>
-              <label><input type="checkbox" name="tools" value="Supabase" /> Supabase</label>
-              <label><input type="checkbox" name="tools" value="Netlify" /> Netlify</label>
-              <label><input type="checkbox" name="tools" value="Vercel" /> Vercel</label>
-              <label><input type="checkbox" name="tools" value="Figma" /> Figma</label>
-              <label><input type="checkbox" name="tools" value="ChatGPT" /> ChatGPT</label>
-              <label><input type="checkbox" name="tools" value="Codex" /> Codex</label>
-              <label><input type="checkbox" name="tools" value="Claude" /> Claude</label>
-              <label><input type="checkbox" name="tools" value="Other" /> Other</label>
-            </div>
-          </fieldset>
-        </form>
+        <div>
+          <span class="status-label">User intervention</span>
+          <strong id="intervention-label">Review extracted draft before applying</strong>
+        </div>
       </div>
 
-      <div class="template-panel" data-template-panel="core-loop" hidden>
-        <div class="section-heading">
-          <p class="step-label">Pass 2</p>
-          <h2>Core Loop Template</h2>
-          <p>
-            Define the smallest complete user behavior before adding more features, screens, or integrations.
-          </p>
+      <div class="left-scroll-region">
+        <div class="import-panel" aria-labelledby="import-title">
+          <div class="import-heading">
+            <p class="step-label">Input assist</p>
+            <h2 id="import-title">Paste a rough idea</h2>
+            <p>
+              VibeKit extracts an AI-style draft. This is an intervention step: review it before applying it to the form.
+            </p>
+          </div>
+
+          <div class="field compact-field">
+            <label for="import-input">Prompt or notes</label>
+            <textarea id="import-input" rows="4" placeholder="Example: I want to build a vibe coding app for solo founders. It should use VS Code, GitHub, and Supabase. It should not become a full IDE..."></textarea>
+          </div>
+
+          <div class="button-row compact-row">
+            <button type="button" id="extract-button" class="button secondary">Extract Draft</button>
+            <button type="button" id="apply-draft-button" class="button secondary">Apply Draft</button>
+            <button type="button" id="clear-import-button" class="button secondary">Clear Import</button>
+          </div>
+
+          <pre id="import-preview" class="import-preview">Draft values will appear here before they are applied.</pre>
         </div>
 
-        <form class="intake-form" data-template-form="core-loop">
-          <div class="field">
-            <label for="primary-user">Who is the primary user? <span>required</span></label>
-            <textarea id="primary-user" name="primaryUser" rows="3" required></textarea>
+        <div class="template-panel active" data-template-panel="product-intake">
+          <div class="section-heading compact-section-heading">
+            <p class="step-label">Pass 1</p>
+            <h2 id="intake-title">Product Intake Template</h2>
+            <p>Define the minimum product context needed for the first build conversation.</p>
           </div>
 
-          <div class="field">
-            <label for="trigger">What triggers them to open the app?</label>
-            <textarea id="trigger" name="trigger" rows="3"></textarea>
-          </div>
+          <form id="product-intake-form" class="intake-form compact-form" data-template-form="product-intake">
+            <div class="field"><label for="app-name">App name <span>required</span></label><input id="app-name" name="appName" type="text" placeholder="VibeKit" required /></div>
+            <div class="field"><label for="description">One-sentence description <span>required</span></label><textarea id="description" name="description" rows="2" placeholder="A guided requirements workspace for AI-assisted app builders." required></textarea></div>
+            <div class="field"><label for="problem">What problem does this solve?</label><textarea id="problem" name="problem" rows="2"></textarea></div>
+            <div class="field"><label for="audience">Who is it for?</label><textarea id="audience" name="audience" rows="2"></textarea></div>
+            <div class="field"><label for="first-action">What should users be able to do first?</label><textarea id="first-action" name="firstAction" rows="2"></textarea></div>
+            <div class="field"><label for="not-become">What should this app not become?</label><textarea id="not-become" name="notBecome" rows="2"></textarea></div>
+            <div class="field"><label for="vibe">What is the emotional or vibe direction?</label><textarea id="vibe" name="vibe" rows="2"></textarea></div>
+            <div class="field"><label for="references">Comparable apps or references</label><textarea id="references" name="references" rows="2"></textarea></div>
+            <div class="field"><label for="different">What makes this different?</label><textarea id="different" name="different" rows="2"></textarea></div>
 
-          <div class="field">
-            <label for="first-loop-action">What do they do first?</label>
-            <textarea id="first-loop-action" name="firstLoopAction" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="value-moment">What value do they receive?</label>
-            <textarea id="value-moment" name="valueMoment" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="return-trigger">What makes them come back?</label>
-            <textarea id="return-trigger" name="returnTrigger" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="smallest-loop">What is the smallest complete loop? <span>required</span></label>
-            <textarea id="smallest-loop" name="smallestLoop" rows="4" required></textarea>
-          </div>
-
-          <div class="field">
-            <label for="loop-exclusions">What should be intentionally left out of the first loop?</label>
-            <textarea id="loop-exclusions" name="loopExclusions" rows="3"></textarea>
-          </div>
-        </form>
-      </div>
-
-      <div class="template-panel" data-template-panel="mvp-boundary" hidden>
-        <div class="section-heading">
-          <p class="step-label">Pass 2</p>
-          <h2>MVP Boundary Template</h2>
-          <p>
-            Prevent scope explosion by separating the first working version from later features and intentional exclusions.
-          </p>
+            <fieldset class="tools-fieldset compact-tools">
+              <legend>Preferred helper tools</legend>
+              <div class="tool-grid">
+                <label><input type="checkbox" name="tools" value="VS Code" /> VS Code</label>
+                <label><input type="checkbox" name="tools" value="GitHub" /> GitHub</label>
+                <label><input type="checkbox" name="tools" value="Supabase" /> Supabase</label>
+                <label><input type="checkbox" name="tools" value="Netlify" /> Netlify</label>
+                <label><input type="checkbox" name="tools" value="Vercel" /> Vercel</label>
+                <label><input type="checkbox" name="tools" value="Figma" /> Figma</label>
+                <label><input type="checkbox" name="tools" value="ChatGPT" /> ChatGPT</label>
+                <label><input type="checkbox" name="tools" value="Codex" /> Codex</label>
+                <label><input type="checkbox" name="tools" value="Claude" /> Claude</label>
+                <label><input type="checkbox" name="tools" value="Other" /> Other</label>
+              </div>
+            </fieldset>
+          </form>
         </div>
 
-        <form class="intake-form" data-template-form="mvp-boundary">
-          <div class="field">
-            <label for="must-have">Must-have for the first working version <span>required</span></label>
-            <textarea id="must-have" name="mustHave" rows="4" required></textarea>
+        <div class="template-panel" data-template-panel="core-loop" hidden>
+          <div class="section-heading compact-section-heading">
+            <p class="step-label">Pass 2</p>
+            <h2>Core Loop Template</h2>
+            <p>Define the smallest complete user behavior before adding more features.</p>
           </div>
+          <form class="intake-form compact-form" data-template-form="core-loop">
+            <div class="field"><label for="primary-user">Who is the primary user? <span>required</span></label><textarea id="primary-user" name="primaryUser" rows="2" required></textarea></div>
+            <div class="field"><label for="trigger">What triggers them to open the app?</label><textarea id="trigger" name="trigger" rows="2"></textarea></div>
+            <div class="field"><label for="first-loop-action">What do they do first?</label><textarea id="first-loop-action" name="firstLoopAction" rows="2"></textarea></div>
+            <div class="field"><label for="value-moment">What value do they receive?</label><textarea id="value-moment" name="valueMoment" rows="2"></textarea></div>
+            <div class="field"><label for="return-trigger">What makes them come back?</label><textarea id="return-trigger" name="returnTrigger" rows="2"></textarea></div>
+            <div class="field"><label for="smallest-loop">What is the smallest complete loop? <span>required</span></label><textarea id="smallest-loop" name="smallestLoop" rows="3" required></textarea></div>
+            <div class="field"><label for="loop-exclusions">What should be intentionally left out of the first loop?</label><textarea id="loop-exclusions" name="loopExclusions" rows="2"></textarea></div>
+          </form>
+        </div>
 
-          <div class="field">
-            <label for="nice-later">Nice-to-have later</label>
-            <textarea id="nice-later" name="niceLater" rows="3"></textarea>
+        <div class="template-panel" data-template-panel="mvp-boundary" hidden>
+          <div class="section-heading compact-section-heading">
+            <p class="step-label">Pass 2</p>
+            <h2>MVP Boundary Template</h2>
+            <p>Separate first-version requirements from later features and intentional exclusions.</p>
           </div>
-
-          <div class="field">
-            <label for="out-of-scope">Explicitly out of scope <span>required</span></label>
-            <textarea id="out-of-scope" name="outOfScope" rows="4" required></textarea>
-          </div>
-
-          <div class="field">
-            <label for="manual-first">What can be faked or manual at first?</label>
-            <textarea id="manual-first" name="manualFirst" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="real-day-one">What must be real from day one?</label>
-            <textarea id="real-day-one" name="realDayOne" rows="3"></textarea>
-          </div>
-
-          <div class="field">
-            <label for="safety-risks">What would make the app unsafe or confusing if missing?</label>
-            <textarea id="safety-risks" name="safetyRisks" rows="3"></textarea>
-          </div>
-        </form>
+          <form class="intake-form compact-form" data-template-form="mvp-boundary">
+            <div class="field"><label for="must-have">Must-have for the first working version <span>required</span></label><textarea id="must-have" name="mustHave" rows="3" required></textarea></div>
+            <div class="field"><label for="nice-later">Nice-to-have later</label><textarea id="nice-later" name="niceLater" rows="2"></textarea></div>
+            <div class="field"><label for="out-of-scope">Explicitly out of scope <span>required</span></label><textarea id="out-of-scope" name="outOfScope" rows="3" required></textarea></div>
+            <div class="field"><label for="manual-first">What can be faked or manual at first?</label><textarea id="manual-first" name="manualFirst" rows="2"></textarea></div>
+            <div class="field"><label for="real-day-one">What must be real from day one?</label><textarea id="real-day-one" name="realDayOne" rows="2"></textarea></div>
+            <div class="field"><label for="safety-risks">What would make the app unsafe or confusing if missing?</label><textarea id="safety-risks" name="safetyRisks" rows="2"></textarea></div>
+          </form>
+        </div>
       </div>
 
       <p id="form-message" class="form-message" role="status"></p>
 
-      <div class="button-row">
+      <div class="button-row action-row">
         <button type="button" id="generate-button" class="button primary">Generate Output</button>
         <button type="button" id="clear-button" class="button secondary">Clear Active Template</button>
       </div>
     </section>
 
     <section class="panel brief-panel" aria-labelledby="brief-title">
-      <div class="section-heading brief-heading">
+      <div class="output-meta" aria-label="Output details">
+        <div><span class="status-label">Output type</span><strong id="output-type-label">Product Brief</strong></div>
+        <div><span class="status-label">Prompt type</span><strong id="prompt-type-label">Strategy</strong></div>
+        <div><span class="status-label">Status</span><strong id="review-status-label">Needs user review</strong></div>
+      </div>
+
+      <div class="section-heading brief-heading compact-section-heading">
         <p class="step-label">Output</p>
         <h2 id="brief-title">Generated Template Output</h2>
-        <p id="output-description">
-          Copy this into ChatGPT, Codex, Claude, or your coding assistant as the first structured context block.
-        </p>
+        <p id="output-description">Copy this after reviewing it. Generated outputs are drafts until approved by the user.</p>
       </div>
 
       <div class="brief-actions">
@@ -218,13 +156,23 @@
       </div>
 
       <pre id="brief-output" class="brief-output" tabindex="0">Your Product Brief v1 will appear here after you generate it.</pre>
+
+      <aside class="activity-panel" aria-labelledby="activity-title">
+        <div class="activity-heading">
+          <p class="step-label">Activity log</p>
+          <h2 id="activity-title">What VibeKit did</h2>
+        </div>
+        <ol id="activity-log" class="activity-log">
+          <li>Ready — choose a template, paste notes, or generate output.</li>
+        </ol>
+      </aside>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <p>Progressive requirements, not giant specs.</p>
+  <footer class="site-footer compact-footer">
+    <p>Progressive requirements, not giant specs. AI drafts require user review.</p>
   </footer>
 
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=4"></script>
 </body>
 </html>

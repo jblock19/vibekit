@@ -7,6 +7,11 @@ const copyButton = document.querySelector('#copy-button');
 const clearButton = document.querySelector('#clear-button');
 const generateButton = document.querySelector('#generate-button');
 const formMessage = document.querySelector('#form-message');
+const importInput = document.querySelector('#import-input');
+const importPreview = document.querySelector('#import-preview');
+const extractButton = document.querySelector('#extract-button');
+const applyDraftButton = document.querySelector('#apply-draft-button');
+const clearImportButton = document.querySelector('#clear-import-button');
 
 const templates = {
   'product-intake': {
@@ -44,7 +49,10 @@ const templates = {
   }
 };
 
+const toolNames = ['VS Code', 'GitHub', 'Supabase', 'Netlify', 'Vercel', 'Figma', 'ChatGPT', 'Codex', 'Claude', 'Other'];
+
 let activeTemplate = 'product-intake';
+let currentDraft = null;
 const generatedOutputs = {
   'product-intake': '',
   'core-loop': '',
@@ -111,6 +119,8 @@ function switchTemplate(templateName) {
 
   output.textContent = generatedOutputs[templateName] || config.emptyText;
   outputDescription.textContent = config.outputDescription;
+  currentDraft = null;
+  renderImportPreview(null);
   setMessage('');
 }
 
@@ -229,6 +239,139 @@ function handleClear() {
   setMessage('');
 }
 
+function getSentences(text) {
+  return text
+    .replace(/\n+/g, ' ')
+    .split(/(?<=[.!?])\s+/)
+    .map(sentence => sentence.trim())
+    .filter(Boolean);
+}
+
+function findSentence(sentences, patterns) {
+  return sentences.find(sentence => patterns.some(pattern => pattern.test(sentence))) || '';
+}
+
+function extractLabelValue(text, labels) {
+  for (const label of labels) {
+    const pattern = new RegExp(`${label}\\s*[:–-]\\s*([^\\n]+)`, 'i');
+    const match = text.match(pattern);
+    if (match?.[1]) return match[1].trim();
+  }
+
+  return '';
+}
+
+function inferAppName(text) {
+  const labelValue = extractLabelValue(text, ['app name', 'name', 'working title']);
+  if (labelValue) return labelValue;
+
+  const calledMatch = text.match(/(?:called|named)\s+([A-Z][A-Za-z0-9 ]{2,32})/);
+  if (calledMatch?.[1]) return calledMatch[1].trim().replace(/[.!?]$/, '');
+
+  return '';
+}
+
+function inferTools(text) {
+  const lowerText = text.toLowerCase();
+  return toolNames.filter(tool => lowerText.includes(tool.toLowerCase()));
+}
+
+function extractDraftForActiveTemplate(text) {
+  const sentences = getSentences(text);
+
+  if (activeTemplate === 'product-intake') {
+    return {
+      appName: inferAppName(text),
+      description: extractLabelValue(text, ['one-sentence description', 'description']) || sentences[0] || '',
+      problem: extractLabelValue(text, ['problem', 'what problem does this solve']) || findSentence(sentences, [/problem/i, /solve/i, /struggle/i, /pain/i]),
+      audience: extractLabelValue(text, ['who is it for', 'audience', 'target user']) || findSentence(sentences, [/for\s+(solo|users|founders|teams|builders|designers|developers|people)/i, /target user/i, /audience/i]),
+      firstAction: extractLabelValue(text, ['first action', 'what should users be able to do first']) || findSentence(sentences, [/first/i, /start/i, /create/i, /fill/i]),
+      notBecome: extractLabelValue(text, ['should not become', 'not become', 'what should this app not become']) || findSentence(sentences, [/should not/i, /not become/i, /avoid/i]),
+      vibe: extractLabelValue(text, ['vibe', 'emotional direction', 'design direction']) || findSentence(sentences, [/vibe/i, /feel/i, /clean/i, /editorial/i, /calm/i]),
+      references: extractLabelValue(text, ['references', 'comparable apps', 'comparables']) || findSentence(sentences, [/like/i, /reference/i, /similar/i, /notion/i, /linear/i]),
+      different: extractLabelValue(text, ['different', 'what makes this different', 'differentiation']) || findSentence(sentences, [/different/i, /unique/i, /instead/i]),
+      tools: inferTools(text)
+    };
+  }
+
+  if (activeTemplate === 'core-loop') {
+    return {
+      primaryUser: extractLabelValue(text, ['primary user', 'user', 'target user']) || findSentence(sentences, [/for\s+(solo|users|founders|teams|builders|designers|developers|people)/i, /primary user/i]),
+      trigger: extractLabelValue(text, ['trigger', 'what triggers them']) || findSentence(sentences, [/trigger/i, /open the app/i, /when/i]),
+      firstLoopAction: extractLabelValue(text, ['first action', 'what do they do first']) || findSentence(sentences, [/first/i, /start/i, /fill/i, /create/i]),
+      valueMoment: extractLabelValue(text, ['value moment', 'value', 'what value do they receive']) || findSentence(sentences, [/value/i, /receive/i, /generate/i, /output/i]),
+      returnTrigger: extractLabelValue(text, ['return trigger', 'what makes them come back']) || findSentence(sentences, [/come back/i, /return/i, /next/i]),
+      smallestLoop: extractLabelValue(text, ['smallest complete loop', 'core loop']) || findSentence(sentences, [/loop/i, /create.*generate/i, /fill.*generate/i]),
+      loopExclusions: extractLabelValue(text, ['left out', 'excluded', 'intentionally left out']) || findSentence(sentences, [/left out/i, /exclude/i, /not include/i])
+    };
+  }
+
+  return {
+    mustHave: extractLabelValue(text, ['must-have', 'must have', 'first working version']) || findSentence(sentences, [/must/i, /first working/i, /need/i]),
+    niceLater: extractLabelValue(text, ['nice-to-have', 'nice to have', 'later']) || findSentence(sentences, [/later/i, /eventually/i, /nice/i]),
+    outOfScope: extractLabelValue(text, ['out of scope', 'explicitly out of scope']) || findSentence(sentences, [/out of scope/i, /not include/i, /not build/i]),
+    manualFirst: extractLabelValue(text, ['manual', 'fakeable', 'faked']) || findSentence(sentences, [/manual/i, /fake/i, /static/i]),
+    realDayOne: extractLabelValue(text, ['real from day one', 'must be real']) || findSentence(sentences, [/real from day one/i, /must be real/i]),
+    safetyRisks: extractLabelValue(text, ['safety', 'confusing', 'risks']) || findSentence(sentences, [/unsafe/i, /confusing/i, /risk/i])
+  };
+}
+
+function renderImportPreview(draft) {
+  if (!importPreview) return;
+
+  if (!draft) {
+    importPreview.textContent = 'Draft values will appear here before they are applied.';
+    return;
+  }
+
+  importPreview.textContent = JSON.stringify(draft, null, 2);
+}
+
+function handleExtractDraft() {
+  const text = importInput?.value.trim() || '';
+
+  if (!text) {
+    currentDraft = null;
+    renderImportPreview(null);
+    setMessage('Paste a rough idea or prompt before extracting a draft.');
+    return;
+  }
+
+  currentDraft = extractDraftForActiveTemplate(text);
+  renderImportPreview(currentDraft);
+  setMessage('Draft extracted. Review it, then apply it to the active template.', 'success');
+}
+
+function applyDraftToActiveTemplate() {
+  const form = getActiveForm();
+
+  if (!form || !currentDraft) {
+    setMessage('Extract a draft before applying it.');
+    return;
+  }
+
+  Object.entries(currentDraft).forEach(([key, value]) => {
+    if (key === 'tools' && Array.isArray(value)) {
+      form.querySelectorAll('input[name="tools"]').forEach(input => {
+        input.checked = value.includes(input.value);
+      });
+      return;
+    }
+
+    const field = form.elements[key];
+    if (field && value) field.value = value;
+  });
+
+  setMessage('Draft applied to the active template. Review the fields before generating output.', 'success');
+}
+
+function clearImportDraft() {
+  if (importInput) importInput.value = '';
+  currentDraft = null;
+  renderImportPreview(null);
+  setMessage('');
+}
+
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     switchTemplate(tab.dataset.templateTab);
@@ -245,5 +388,8 @@ forms.forEach(form => {
 generateButton?.addEventListener('click', handleGenerate);
 copyButton?.addEventListener('click', handleCopy);
 clearButton?.addEventListener('click', handleClear);
+extractButton?.addEventListener('click', handleExtractDraft);
+applyDraftButton?.addEventListener('click', applyDraftToActiveTemplate);
+clearImportButton?.addEventListener('click', clearImportDraft);
 
 switchTemplate(activeTemplate);

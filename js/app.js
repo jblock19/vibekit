@@ -64,39 +64,44 @@ function getActiveTemplateConfig() {
 }
 
 function getActiveForm() {
-  return document.querySelector(`[data-template-form="${activeTemplate}"]`);
+  return document.querySelector('[data-template-form="' + activeTemplate + '"]');
 }
 
 function getFieldValue(formData, key) {
   return String(formData.get(key) || '').trim();
 }
 
-function getSelectedTools(form = document) {
-  return Array.from(form.querySelectorAll('input[name="tools"]:checked'))
-    .map(input => input.value)
+function getSelectedTools(form) {
+  const scope = form || document;
+  return Array.from(scope.querySelectorAll('input[name="tools"]:checked'))
+    .map(function(input) {
+      return input.value;
+    })
     .join(', ');
 }
 
-function valueOrPlaceholder(value, placeholder = 'Not defined yet.') {
-  return value || placeholder;
+function valueOrPlaceholder(value, placeholder) {
+  return value || placeholder || 'Not defined yet.';
 }
 
-function setMessage(message, tone = 'error') {
+function setMessage(message, tone) {
   if (!formMessage) return;
   formMessage.textContent = message;
-  formMessage.dataset.tone = tone;
+  formMessage.dataset.tone = tone || 'error';
 }
 
 function validateRequiredFields(formData, requiredFields) {
-  const missing = requiredFields.filter(field => !getFieldValue(formData, field.key));
+  const missing = requiredFields.filter(function(field) {
+    return !getFieldValue(formData, field.key);
+  });
 
   if (!missing.length) return '';
 
   if (missing.length === 1) {
-    return `Add ${missing[0].label} before generating this output.`;
+    return 'Add ' + missing[0].label + ' before generating this output.';
   }
 
-  return `Add ${missing.map(field => field.label).join(' and ')} before generating this output.`;
+  return 'Add ' + missing.map(function(field) { return field.label; }).join(' and ') + ' before generating this output.';
 }
 
 function switchTemplate(templateName) {
@@ -105,13 +110,13 @@ function switchTemplate(templateName) {
   activeTemplate = templateName;
   const config = getActiveTemplateConfig();
 
-  tabs.forEach(tab => {
+  tabs.forEach(function(tab) {
     const isActive = tab.dataset.templateTab === templateName;
     tab.classList.toggle('active', isActive);
     tab.setAttribute('aria-selected', String(isActive));
   });
 
-  panels.forEach(panel => {
+  panels.forEach(function(panel) {
     const isActive = panel.dataset.templatePanel === templateName;
     panel.classList.toggle('active', isActive);
     panel.hidden = !isActive;
@@ -136,19 +141,19 @@ function generateProductBrief(formData, form) {
   const different = getFieldValue(formData, 'different');
   const tools = getSelectedTools(form);
 
-  return `# Product Brief v1: ${appName}\n\n` +
-`## One-Sentence Description\n${description}\n\n` +
-`## Product Point of View\n${appName} should be built through progressive requirements, not one giant specification dump. The product should help its builder define only the context needed for the next useful AI build pass.\n\n` +
-`## Core Problem\n${valueOrPlaceholder(problem)}\n\n` +
-`## Target User\n${valueOrPlaceholder(audience)}\n\n` +
-`## First User Action\n${valueOrPlaceholder(firstAction)}\n\n` +
-`## What This App Should Not Become\n${valueOrPlaceholder(notBecome)}\n\n` +
-`## Vibe Direction\n${valueOrPlaceholder(vibe)}\n\n` +
-`## Comparable Apps or References\n${valueOrPlaceholder(references)}\n\n` +
-`## Differentiation\n${valueOrPlaceholder(different)}\n\n` +
-`## Recommended Helper Tools\n${valueOrPlaceholder(tools, 'No tools selected yet.')}\n\n` +
-`## Next Recommended Template\nCore Loop Template\n\n` +
-`## Suggested Next Prompt\nUse this product brief as context. Do not build the whole app yet. Help me define the smallest complete user loop for ${appName}, including the trigger, first action, value moment, and reason to return.`;
+  return '# Product Brief v1: ' + appName + '\n\n' +
+'## One-Sentence Description\n' + description + '\n\n' +
+'## Product Point of View\n' + appName + ' should be built through progressive requirements, not one giant specification dump. The product should help its builder define only the context needed for the next useful AI build pass.\n\n' +
+'## Core Problem\n' + valueOrPlaceholder(problem) + '\n\n' +
+'## Target User\n' + valueOrPlaceholder(audience) + '\n\n' +
+'## First User Action\n' + valueOrPlaceholder(firstAction) + '\n\n' +
+'## What This App Should Not Become\n' + valueOrPlaceholder(notBecome) + '\n\n' +
+'## Vibe Direction\n' + valueOrPlaceholder(vibe) + '\n\n' +
+'## Comparable Apps or References\n' + valueOrPlaceholder(references) + '\n\n' +
+'## Differentiation\n' + valueOrPlaceholder(different) + '\n\n' +
+'## Recommended Helper Tools\n' + valueOrPlaceholder(tools, 'No tools selected yet.') + '\n\n' +
+'## Next Recommended Template\nCore Loop Template\n\n' +
+'## Suggested Next Prompt\nUse this product brief as context. Do not build the whole app yet. Help me define the smallest complete user loop for ' + appName + ', including the trigger, first action, value moment, and reason to return.';
 }
 
 function generateCoreLoopBrief(formData) {
@@ -160,16 +165,16 @@ function generateCoreLoopBrief(formData) {
   const smallestLoop = getFieldValue(formData, 'smallestLoop');
   const loopExclusions = getFieldValue(formData, 'loopExclusions');
 
-  return `# Core User Loop Brief\n\n` +
-`## Primary User\n${primaryUser}\n\n` +
-`## Trigger\n${valueOrPlaceholder(trigger)}\n\n` +
-`## First Action\n${valueOrPlaceholder(firstLoopAction)}\n\n` +
-`## Value Moment\n${valueOrPlaceholder(valueMoment)}\n\n` +
-`## Return Trigger\n${valueOrPlaceholder(returnTrigger)}\n\n` +
-`## Smallest Complete Loop\n${smallestLoop}\n\n` +
-`## Intentionally Excluded From First Loop\n${valueOrPlaceholder(loopExclusions)}\n\n` +
-`## Next Recommended Template\nMVP Boundary Template\n\n` +
-`## Suggested Next Prompt\nUse this Core User Loop Brief to define the MVP boundary. Separate must-have features, later features, out-of-scope items, fakeable/manual items, must-be-real items, and safety risks.`;
+  return '# Core User Loop Brief\n\n' +
+'## Primary User\n' + primaryUser + '\n\n' +
+'## Trigger\n' + valueOrPlaceholder(trigger) + '\n\n' +
+'## First Action\n' + valueOrPlaceholder(firstLoopAction) + '\n\n' +
+'## Value Moment\n' + valueOrPlaceholder(valueMoment) + '\n\n' +
+'## Return Trigger\n' + valueOrPlaceholder(returnTrigger) + '\n\n' +
+'## Smallest Complete Loop\n' + smallestLoop + '\n\n' +
+'## Intentionally Excluded From First Loop\n' + valueOrPlaceholder(loopExclusions) + '\n\n' +
+'## Next Recommended Template\nMVP Boundary Template\n\n' +
+'## Suggested Next Prompt\nUse this Core User Loop Brief to define the MVP boundary. Separate must-have features, later features, out-of-scope items, fakeable/manual items, must-be-real items, and safety risks.';
 }
 
 function generateMvpBoundaryBrief(formData) {
@@ -180,15 +185,15 @@ function generateMvpBoundaryBrief(formData) {
   const realDayOne = getFieldValue(formData, 'realDayOne');
   const safetyRisks = getFieldValue(formData, 'safetyRisks');
 
-  return `# MVP Scope Brief\n\n` +
-`## Must-Have For First Working Version\n${mustHave}\n\n` +
-`## Nice-To-Have Later\n${valueOrPlaceholder(niceLater)}\n\n` +
-`## Explicitly Out Of Scope\n${outOfScope}\n\n` +
-`## Fakeable Or Manual At First\n${valueOrPlaceholder(manualFirst)}\n\n` +
-`## Must Be Real From Day One\n${valueOrPlaceholder(realDayOne)}\n\n` +
-`## Safety Or Confusion Risks\n${valueOrPlaceholder(safetyRisks)}\n\n` +
-`## Next Recommended Template\nDesign and Vibe System\n\n` +
-`## Suggested Next Prompt\nUse this MVP Scope Brief to create a Design and Vibe System. Define visual references, typography, color, layout, mobile behavior, desktop behavior, interaction principles, and UI anti-patterns.`;
+  return '# MVP Scope Brief\n\n' +
+'## Must-Have For First Working Version\n' + mustHave + '\n\n' +
+'## Nice-To-Have Later\n' + valueOrPlaceholder(niceLater) + '\n\n' +
+'## Explicitly Out Of Scope\n' + outOfScope + '\n\n' +
+'## Fakeable Or Manual At First\n' + valueOrPlaceholder(manualFirst) + '\n\n' +
+'## Must Be Real From Day One\n' + valueOrPlaceholder(realDayOne) + '\n\n' +
+'## Safety Or Confusion Risks\n' + valueOrPlaceholder(safetyRisks) + '\n\n' +
+'## Next Recommended Template\nDesign and Vibe System\n\n' +
+'## Suggested Next Prompt\nUse this MVP Scope Brief to create a Design and Vibe System. Define visual references, typography, color, layout, mobile behavior, desktop behavior, interaction principles, and UI anti-patterns.';
 }
 
 function handleGenerate() {
@@ -211,7 +216,7 @@ function handleGenerate() {
   setMessage(config.successMessage, 'success');
 }
 
-async function handleCopy() {
+function handleCopy() {
   const config = getActiveTemplateConfig();
   const currentOutput = generatedOutputs[activeTemplate];
 
@@ -220,20 +225,26 @@ async function handleCopy() {
     return;
   }
 
-  try {
-    await navigator.clipboard.writeText(currentOutput);
-    setMessage('Output copied to clipboard.', 'success');
-  } catch (error) {
-    console.error('Could not copy output:', error);
-    setMessage('Could not copy automatically. Select the output text and copy it manually.');
+  if (!navigator.clipboard) {
+    setMessage('Clipboard copy is not available in this preview. Select the output text and copy it manually.');
+    return;
   }
+
+  navigator.clipboard.writeText(currentOutput)
+    .then(function() {
+      setMessage('Output copied to clipboard.', 'success');
+    })
+    .catch(function(error) {
+      console.error('Could not copy output:', error);
+      setMessage('Could not copy automatically. Select the output text and copy it manually.');
+    });
 }
 
 function handleClear() {
   const form = getActiveForm();
   const config = getActiveTemplateConfig();
 
-  form?.reset();
+  if (form) form.reset();
   generatedOutputs[activeTemplate] = '';
   output.textContent = config.emptyText;
   setMessage('');
@@ -242,20 +253,28 @@ function handleClear() {
 function getSentences(text) {
   return text
     .replace(/\n+/g, ' ')
-    .split(/(?<=[.!?])\s+/)
-    .map(sentence => sentence.trim())
+    .replace(/([.!?])\s+/g, '$1|')
+    .split('|')
+    .map(function(sentence) {
+      return sentence.trim();
+    })
     .filter(Boolean);
 }
 
 function findSentence(sentences, patterns) {
-  return sentences.find(sentence => patterns.some(pattern => pattern.test(sentence))) || '';
+  return sentences.find(function(sentence) {
+    return patterns.some(function(pattern) {
+      return pattern.test(sentence);
+    });
+  }) || '';
 }
 
 function extractLabelValue(text, labels) {
-  for (const label of labels) {
-    const pattern = new RegExp(`${label}\\s*[:–-]\\s*([^\\n]+)`, 'i');
+  for (let i = 0; i < labels.length; i += 1) {
+    const label = labels[i];
+    const pattern = new RegExp(label + '\\s*[:–-]\\s*([^\\n]+)', 'i');
     const match = text.match(pattern);
-    if (match?.[1]) return match[1].trim();
+    if (match && match[1]) return match[1].trim();
   }
 
   return '';
@@ -266,14 +285,16 @@ function inferAppName(text) {
   if (labelValue) return labelValue;
 
   const calledMatch = text.match(/(?:called|named)\s+([A-Z][A-Za-z0-9 ]{2,32})/);
-  if (calledMatch?.[1]) return calledMatch[1].trim().replace(/[.!?]$/, '');
+  if (calledMatch && calledMatch[1]) return calledMatch[1].trim().replace(/[.!?]$/, '');
 
   return '';
 }
 
 function inferTools(text) {
   const lowerText = text.toLowerCase();
-  return toolNames.filter(tool => lowerText.includes(tool.toLowerCase()));
+  return toolNames.filter(function(tool) {
+    return lowerText.includes(tool.toLowerCase());
+  });
 }
 
 function extractDraftForActiveTemplate(text) {
@@ -328,7 +349,7 @@ function renderImportPreview(draft) {
 }
 
 function handleExtractDraft() {
-  const text = importInput?.value.trim() || '';
+  const text = importInput ? importInput.value.trim() : '';
 
   if (!text) {
     currentDraft = null;
@@ -350,9 +371,12 @@ function applyDraftToActiveTemplate() {
     return;
   }
 
-  Object.entries(currentDraft).forEach(([key, value]) => {
+  Object.entries(currentDraft).forEach(function(entry) {
+    const key = entry[0];
+    const value = entry[1];
+
     if (key === 'tools' && Array.isArray(value)) {
-      form.querySelectorAll('input[name="tools"]').forEach(input => {
+      form.querySelectorAll('input[name="tools"]').forEach(function(input) {
         input.checked = value.includes(input.value);
       });
       return;
@@ -372,24 +396,24 @@ function clearImportDraft() {
   setMessage('');
 }
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
+tabs.forEach(function(tab) {
+  tab.addEventListener('click', function() {
     switchTemplate(tab.dataset.templateTab);
   });
 });
 
-forms.forEach(form => {
-  form.addEventListener('submit', event => {
+forms.forEach(function(form) {
+  form.addEventListener('submit', function(event) {
     event.preventDefault();
     handleGenerate();
   });
 });
 
-generateButton?.addEventListener('click', handleGenerate);
-copyButton?.addEventListener('click', handleCopy);
-clearButton?.addEventListener('click', handleClear);
-extractButton?.addEventListener('click', handleExtractDraft);
-applyDraftButton?.addEventListener('click', applyDraftToActiveTemplate);
-clearImportButton?.addEventListener('click', clearImportDraft);
+if (generateButton) generateButton.addEventListener('click', handleGenerate);
+if (copyButton) copyButton.addEventListener('click', handleCopy);
+if (clearButton) clearButton.addEventListener('click', handleClear);
+if (extractButton) extractButton.addEventListener('click', handleExtractDraft);
+if (applyDraftButton) applyDraftButton.addEventListener('click', applyDraftToActiveTemplate);
+if (clearImportButton) clearImportButton.addEventListener('click', clearImportDraft);
 
 switchTemplate(activeTemplate);

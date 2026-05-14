@@ -1,5 +1,6 @@
 const tabs = Array.from(document.querySelectorAll('[data-template-tab]'));
 const panels = Array.from(document.querySelectorAll('[data-template-panel]'));
+const forms = Array.from(document.querySelectorAll('[data-template-form]'));
 const output = document.querySelector('#brief-output');
 const outputDescription = document.querySelector('#output-description');
 const copyButton = document.querySelector('#copy-button');
@@ -231,6 +232,13 @@ function handleClear() {
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     switchTemplate(tab.dataset.templateTab);
+  });
+});
+
+forms.forEach(form => {
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    handleGenerate();
   });
 });
 

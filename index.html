@@ -34,6 +34,29 @@
 
   <main class="app-shell">
     <section class="panel intake-panel" aria-labelledby="intake-title">
+      <div class="import-panel" aria-labelledby="import-title">
+        <div class="import-heading">
+          <p class="step-label">Input assist</p>
+          <h2 id="import-title">Paste a rough idea</h2>
+          <p>
+            Drop in a messy prompt, notes, or brain dump. VibeKit will draft field values for the active template using simple local parsing. Review before generating output.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="import-input">Prompt or notes</label>
+          <textarea id="import-input" rows="5" placeholder="Example: I want to build a vibe coding app for solo founders. It should use VS Code, GitHub, and Supabase. It should not become a full IDE..."></textarea>
+        </div>
+
+        <div class="button-row compact-row">
+          <button type="button" id="extract-button" class="button secondary">Extract Draft</button>
+          <button type="button" id="apply-draft-button" class="button secondary">Apply Draft to Active Template</button>
+          <button type="button" id="clear-import-button" class="button secondary">Clear Import</button>
+        </div>
+
+        <pre id="import-preview" class="import-preview">Draft values will appear here before they are applied.</pre>
+      </div>
+
       <div class="template-panel active" data-template-panel="product-intake">
         <div class="section-heading">
           <p class="step-label">Pass 1</p>

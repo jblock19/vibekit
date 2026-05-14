@@ -17,98 +17,204 @@
     </p>
   </header>
 
+  <nav class="template-nav" aria-label="Template navigation">
+    <button class="template-tab active" type="button" data-template-tab="product-intake">
+      <span>01</span>
+      Product Intake
+    </button>
+    <button class="template-tab" type="button" data-template-tab="core-loop">
+      <span>02</span>
+      Core Loop
+    </button>
+    <button class="template-tab" type="button" data-template-tab="mvp-boundary">
+      <span>03</span>
+      MVP Boundary
+    </button>
+  </nav>
+
   <main class="app-shell">
     <section class="panel intake-panel" aria-labelledby="intake-title">
-      <div class="section-heading">
-        <p class="step-label">Pass 1</p>
-        <h2 id="intake-title">Product Intake Template</h2>
-        <p>
-          Define only what is needed for the first build conversation. Later templates will handle scope, data, auth, design, and QA.
-        </p>
+      <div class="template-panel active" data-template-panel="product-intake">
+        <div class="section-heading">
+          <p class="step-label">Pass 1</p>
+          <h2 id="intake-title">Product Intake Template</h2>
+          <p>
+            Define only what is needed for the first build conversation. Later templates will handle scope, data, auth, design, and QA.
+          </p>
+        </div>
+
+        <form id="product-intake-form" class="intake-form" data-template-form="product-intake">
+          <div class="field">
+            <label for="app-name">App name <span>required</span></label>
+            <input id="app-name" name="appName" type="text" placeholder="VibeKit" required />
+          </div>
+
+          <div class="field">
+            <label for="description">One-sentence description <span>required</span></label>
+            <textarea id="description" name="description" rows="3" placeholder="A guided requirements workspace for AI-assisted app builders." required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="problem">What problem does this solve?</label>
+            <textarea id="problem" name="problem" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="audience">Who is it for?</label>
+            <textarea id="audience" name="audience" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="first-action">What should users be able to do first?</label>
+            <textarea id="first-action" name="firstAction" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="not-become">What should this app not become?</label>
+            <textarea id="not-become" name="notBecome" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="vibe">What is the emotional or vibe direction?</label>
+            <textarea id="vibe" name="vibe" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="references">Comparable apps or references</label>
+            <textarea id="references" name="references" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="different">What makes this different?</label>
+            <textarea id="different" name="different" rows="3"></textarea>
+          </div>
+
+          <fieldset class="tools-fieldset">
+            <legend>Preferred helper tools</legend>
+            <div class="tool-grid">
+              <label><input type="checkbox" name="tools" value="VS Code" /> VS Code</label>
+              <label><input type="checkbox" name="tools" value="GitHub" /> GitHub</label>
+              <label><input type="checkbox" name="tools" value="Supabase" /> Supabase</label>
+              <label><input type="checkbox" name="tools" value="Netlify" /> Netlify</label>
+              <label><input type="checkbox" name="tools" value="Vercel" /> Vercel</label>
+              <label><input type="checkbox" name="tools" value="Figma" /> Figma</label>
+              <label><input type="checkbox" name="tools" value="ChatGPT" /> ChatGPT</label>
+              <label><input type="checkbox" name="tools" value="Codex" /> Codex</label>
+              <label><input type="checkbox" name="tools" value="Claude" /> Claude</label>
+              <label><input type="checkbox" name="tools" value="Other" /> Other</label>
+            </div>
+          </fieldset>
+        </form>
       </div>
 
-      <form id="product-intake-form" class="intake-form">
-        <div class="field">
-          <label for="app-name">App name <span>required</span></label>
-          <input id="app-name" name="appName" type="text" placeholder="VibeKit" required />
+      <div class="template-panel" data-template-panel="core-loop" hidden>
+        <div class="section-heading">
+          <p class="step-label">Pass 2</p>
+          <h2>Core Loop Template</h2>
+          <p>
+            Define the smallest complete user behavior before adding more features, screens, or integrations.
+          </p>
         </div>
 
-        <div class="field">
-          <label for="description">One-sentence description <span>required</span></label>
-          <textarea id="description" name="description" rows="3" placeholder="A guided requirements workspace for AI-assisted app builders." required></textarea>
-        </div>
-
-        <div class="field">
-          <label for="problem">What problem does this solve?</label>
-          <textarea id="problem" name="problem" rows="3"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="audience">Who is it for?</label>
-          <textarea id="audience" name="audience" rows="3"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="first-action">What should users be able to do first?</label>
-          <textarea id="first-action" name="firstAction" rows="3"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="not-become">What should this app not become?</label>
-          <textarea id="not-become" name="notBecome" rows="3"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="vibe">What is the emotional or vibe direction?</label>
-          <textarea id="vibe" name="vibe" rows="3"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="references">Comparable apps or references</label>
-          <textarea id="references" name="references" rows="3"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="different">What makes this different?</label>
-          <textarea id="different" name="different" rows="3"></textarea>
-        </div>
-
-        <fieldset class="tools-fieldset">
-          <legend>Preferred helper tools</legend>
-          <div class="tool-grid">
-            <label><input type="checkbox" name="tools" value="VS Code" /> VS Code</label>
-            <label><input type="checkbox" name="tools" value="GitHub" /> GitHub</label>
-            <label><input type="checkbox" name="tools" value="Supabase" /> Supabase</label>
-            <label><input type="checkbox" name="tools" value="Netlify" /> Netlify</label>
-            <label><input type="checkbox" name="tools" value="Vercel" /> Vercel</label>
-            <label><input type="checkbox" name="tools" value="Figma" /> Figma</label>
-            <label><input type="checkbox" name="tools" value="ChatGPT" /> ChatGPT</label>
-            <label><input type="checkbox" name="tools" value="Codex" /> Codex</label>
-            <label><input type="checkbox" name="tools" value="Claude" /> Claude</label>
-            <label><input type="checkbox" name="tools" value="Other" /> Other</label>
+        <form class="intake-form" data-template-form="core-loop">
+          <div class="field">
+            <label for="primary-user">Who is the primary user? <span>required</span></label>
+            <textarea id="primary-user" name="primaryUser" rows="3" required></textarea>
           </div>
-        </fieldset>
 
-        <p id="form-message" class="form-message" role="status"></p>
+          <div class="field">
+            <label for="trigger">What triggers them to open the app?</label>
+            <textarea id="trigger" name="trigger" rows="3"></textarea>
+          </div>
 
-        <div class="button-row">
-          <button type="submit" class="button primary">Generate Brief</button>
-          <button type="button" id="clear-button" class="button secondary">Clear Form</button>
+          <div class="field">
+            <label for="first-loop-action">What do they do first?</label>
+            <textarea id="first-loop-action" name="firstLoopAction" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="value-moment">What value do they receive?</label>
+            <textarea id="value-moment" name="valueMoment" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="return-trigger">What makes them come back?</label>
+            <textarea id="return-trigger" name="returnTrigger" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="smallest-loop">What is the smallest complete loop? <span>required</span></label>
+            <textarea id="smallest-loop" name="smallestLoop" rows="4" required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="loop-exclusions">What should be intentionally left out of the first loop?</label>
+            <textarea id="loop-exclusions" name="loopExclusions" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+
+      <div class="template-panel" data-template-panel="mvp-boundary" hidden>
+        <div class="section-heading">
+          <p class="step-label">Pass 2</p>
+          <h2>MVP Boundary Template</h2>
+          <p>
+            Prevent scope explosion by separating the first working version from later features and intentional exclusions.
+          </p>
         </div>
-      </form>
+
+        <form class="intake-form" data-template-form="mvp-boundary">
+          <div class="field">
+            <label for="must-have">Must-have for the first working version <span>required</span></label>
+            <textarea id="must-have" name="mustHave" rows="4" required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="nice-later">Nice-to-have later</label>
+            <textarea id="nice-later" name="niceLater" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="out-of-scope">Explicitly out of scope <span>required</span></label>
+            <textarea id="out-of-scope" name="outOfScope" rows="4" required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="manual-first">What can be faked or manual at first?</label>
+            <textarea id="manual-first" name="manualFirst" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="real-day-one">What must be real from day one?</label>
+            <textarea id="real-day-one" name="realDayOne" rows="3"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="safety-risks">What would make the app unsafe or confusing if missing?</label>
+            <textarea id="safety-risks" name="safetyRisks" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+
+      <p id="form-message" class="form-message" role="status"></p>
+
+      <div class="button-row">
+        <button type="button" id="generate-button" class="button primary">Generate Output</button>
+        <button type="button" id="clear-button" class="button secondary">Clear Active Template</button>
+      </div>
     </section>
 
     <section class="panel brief-panel" aria-labelledby="brief-title">
       <div class="section-heading brief-heading">
         <p class="step-label">Output</p>
-        <h2 id="brief-title">Generated Product Brief</h2>
-        <p>
+        <h2 id="brief-title">Generated Template Output</h2>
+        <p id="output-description">
           Copy this into ChatGPT, Codex, Claude, or your coding assistant as the first structured context block.
         </p>
       </div>
 
       <div class="brief-actions">
-        <button type="button" id="copy-button" class="button primary ghost">Copy Brief</button>
+        <button type="button" id="copy-button" class="button primary ghost">Copy Output</button>
       </div>
 
       <pre id="brief-output" class="brief-output" tabindex="0">Your Product Brief v1 will appear here after you generate it.</pre>

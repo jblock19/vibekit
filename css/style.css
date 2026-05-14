@@ -77,11 +77,52 @@ h2 {
   font-size: 15px;
 }
 
+.template-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line);
+  background: #fbfbf8;
+}
+
+.template-tab {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.template-tab:last-child {
+  border-right: 0;
+}
+
+.template-tab span {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: inherit;
+}
+
+.template-tab:hover,
+.template-tab.active {
+  background: var(--ink);
+  color: #fff;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
   gap: 0;
-  min-height: calc(100vh - 186px);
+  min-height: calc(100vh - 240px);
 }
 
 .panel {
@@ -96,7 +137,7 @@ h2 {
   position: sticky;
   top: 0;
   align-self: start;
-  min-height: calc(100vh - 186px);
+  min-height: calc(100vh - 240px);
   background: #fbfbf8;
 }
 
@@ -110,6 +151,10 @@ h2 {
 
 .brief-heading {
   max-width: none;
+}
+
+.template-panel[hidden] {
+  display: none;
 }
 
 .intake-form {
@@ -183,9 +228,13 @@ textarea:focus {
 
 .form-message {
   min-height: 20px;
-  margin: 0;
+  margin: 26px 0 0;
   color: #8a2b1f;
   font-size: 13px;
+}
+
+.form-message[data-tone='success'] {
+  color: #245c2a;
 }
 
 .button-row,
@@ -193,6 +242,10 @@ textarea:focus {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.button-row {
+  margin-top: 12px;
 }
 
 .brief-actions {
@@ -231,7 +284,7 @@ textarea:focus {
 
 .brief-output {
   min-height: 520px;
-  max-height: calc(100vh - 310px);
+  max-height: calc(100vh - 364px);
   overflow: auto;
   margin: 0;
   padding: 22px;
@@ -257,6 +310,17 @@ textarea:focus {
 
   .site-header {
     gap: 20px;
+  }
+
+  .template-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .template-tab {
+    justify-content: flex-start;
+    padding: 0 20px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
   }
 
   .intake-panel {
